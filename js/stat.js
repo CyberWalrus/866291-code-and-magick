@@ -1,49 +1,71 @@
 'use strict';
-var randomBlueColor = function () {
+var windowShadowColor = 'rgba(0, 0, 0, 0.7)';
+var windowFillStyle = 'white';
+var windowshadowOffsetX = 10;
+var windowshadowOffsetY = 10;
+var windowsStartX = 100;
+var windowsStartY = 10;
+var windowsWidth = 420;
+var windowsHight = 270;
+var textFontMono = '16px PT Mono';
+var textFillStyle = 'black';
+var textStartX = 150;
+var textStartY = 30;
+var textHight = 20;
+var histogramRedFillStyle = 'rgba(255, 0, 0, 1)';
+var histogramYou = 'Вы';
+var histogramStartX = 150;
+var histogramStartY = 240;
+var histogramMaxHight = 150;
+var histogramWidth = 40;
+var histogramBetweenWidth = 50;
+var histogramTextStartY = 255;
+var histogramTextDeltaY = 5;
+var generateBlueColor = function () {
   return 'rgba(0, 0, ' + (Math.floor(Math.random() * (256 - 0)) + 0) + ', 1)';
 };
 var createHistogram = function (ctx, number, percentHight, name, time) {
   ctx.beginPath();
-  ctx.moveTo(150 + number * 90, 240);
-  ctx.lineTo(150 + number * 90, 240 - 150 * percentHight);
-  ctx.lineTo(150 + number * 90 + 40, 240 - 150 * percentHight);
-  ctx.lineTo(150 + number * 90 + 40, 240);
+  ctx.moveTo(histogramStartX + number * (histogramBetweenWidth + histogramWidth), histogramStartY);
+  ctx.lineTo(histogramStartX + number * (histogramBetweenWidth + histogramWidth), histogramStartY - histogramMaxHight * percentHight);
+  ctx.lineTo(histogramStartX + number * (histogramBetweenWidth + histogramWidth) + histogramWidth, histogramStartY - histogramMaxHight * percentHight);
+  ctx.lineTo(histogramStartX + number * (histogramBetweenWidth + histogramWidth) + histogramWidth, histogramStartY);
   ctx.closePath();
-  if (name === 'Вы') {
-    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+  if (name === histogramYou) {
+    ctx.fillStyle = histogramRedFillStyle;
   } else {
-    ctx.fillStyle = randomBlueColor();
+    ctx.fillStyle = generateBlueColor();
   }
   ctx.shadowColor = 'none';
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 0;
   ctx.fill();
-  ctx.font = '16px PT Mono';
-  ctx.fillStyle = 'black';
-  ctx.fillText(name, 150 + number * 90, 255);
-  ctx.fillText(time, 150 + number * 90, 240 - 150 * percentHight - 5);
+  ctx.font = textFontMono;
+  ctx.fillStyle = textFillStyle;
+  ctx.fillText(name, histogramStartX + number * (histogramBetweenWidth + histogramWidth), histogramTextStartY);
+  ctx.fillText(time, histogramStartX + number * (histogramBetweenWidth + histogramWidth), histogramStartY - histogramMaxHight * percentHight - histogramTextDeltaY);
 };
 var createWindows = function (ctx) {
   ctx.beginPath();
-  ctx.moveTo(100, 10);
-  ctx.lineTo(100, 280);
-  ctx.lineTo(520, 280);
-  ctx.lineTo(520, 10);
+  ctx.moveTo(windowsStartX, windowsStartY);
+  ctx.lineTo(windowsStartX, windowsStartY + windowsHight);
+  ctx.lineTo(windowsStartX + windowsWidth, windowsStartY + windowsHight);
+  ctx.lineTo(windowsStartX + windowsWidth, windowsStartY);
   ctx.closePath();
-  ctx.fillStyle = 'white';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-  ctx.shadowOffsetX = 10;
-  ctx.shadowOffsetY = 10;
+  ctx.fillStyle = windowFillStyle;
+  ctx.shadowColor = windowShadowColor;
+  ctx.shadowOffsetX = windowshadowOffsetX;
+  ctx.shadowOffsetY = windowshadowOffsetY;
   ctx.fill();
 };
 var createText = function (ctx) {
-  ctx.font = '16px PT Mono';
+  ctx.font = textFontMono;
   ctx.shadowColor = 'none';
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 0;
-  ctx.fillStyle = 'black';
-  ctx.fillText('Ура вы победили!', 150, 30);
-  ctx.fillText('Список результатов:', 150, 50);
+  ctx.fillStyle = textFillStyle;
+  ctx.fillText('Ура вы победили!', textStartX, textStartY);
+  ctx.fillText('Список результатов:', textStartX, textStartY + textHight);
 };
 window.renderStatistics = function (ctx, names, times) {
   createWindows(ctx);
